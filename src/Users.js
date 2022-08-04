@@ -1,8 +1,9 @@
 import { React, useState, useEffect, useCallback } from "react";
-import { SiGoogleclassroom } from "react-icons/si";
+
 import AddUser from "./Components/AddUser";
 import UserInfo from "./Components/UserInfo";
 import SearchUsers from "./Components/SearchUsers";
+import NavBar from "./NavBar";
 
 function Users() {
   const [userList, setUserList] = useState([]);
@@ -33,10 +34,8 @@ function Users() {
 
   return (
     <div className="Users container mx-auto mt-3 font-thin">
-      <h1 className="text-4xl">
-        <SiGoogleclassroom className="inline-block text-red-400 align-top" />{" "}
-        Users
-      </h1>
+      <NavBar />
+
       <AddUser
         onSendUser={(myUser) => setUserList([...userList, myUser])}
         lastId={userList.reduce(

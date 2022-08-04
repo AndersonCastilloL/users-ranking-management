@@ -1,8 +1,9 @@
 import { React, useState, useEffect, useCallback } from "react";
-import { SiGoogleclassroom } from "react-icons/si";
+
 import AddCourse from "./Components/AddCourse";
 import CourseInfo from "./Components/CourseInfo";
 import SearchCourses from "./Components/SearchCourses";
+import NavBar from "./NavBar";
 
 function App() {
   const [courseList, setCourseList] = useState([]);
@@ -33,10 +34,8 @@ function App() {
 
   return (
     <div className="App container mx-auto mt-3 font-thin">
-      <h1 className="text-4xl">
-        <SiGoogleclassroom className="inline-block text-red-400 align-top" />{" "}
-        Courses
-      </h1>
+      <NavBar />
+
       <AddCourse
         onSendCourse={(myCourse) => setCourseList([...courseList, myCourse])}
         lastId={courseList.reduce(
