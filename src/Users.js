@@ -1,28 +1,28 @@
 import { React, useState, useEffect, useCallback } from "react";
 import { SiGoogleclassroom } from "react-icons/si";
-import AddCourse from "./Components/AddCourse";
-import CourseInfo from "./Components/CourseInfo";
-import SearchCourses from "./Components/SearchCourses";
+import AddUser from "./Components/AddUser";
+import UserInfo from "./Components/UserInfo";
+import SearchUsers from "./Components/SearchUsers";
 
-function App() {
-  const [courseList, setCourseList] = useState([]);
+function Users() {
+  const [userList, setUserList] = useState([]);
   const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState("courseName");
+  const [sortBy, setSortBy] = useState("userName");
   const [orderBy, setOrderBy] = useState("asc");
 
   const fetchData = useCallback(() => {
-    fetch("./courses.json")
+    fetch("./users.json")
       .then((response) => response.json())
-      .then((data) => setCourseList(data));
+      .then((data) => setUserList(data));
   }, []);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const filterCourses = courseList
+  const filterUsers = userList
     .filter((item) => {
-      return item.courseName.toLowerCase().includes(query.toLowerCase());
+      return item.userName.toLowerCase().includes(query.toLowerCase());
     })
     .sort((a, b) => {
       const order = orderBy === "asc" ? 1 : -1;
@@ -32,19 +32,19 @@ function App() {
     });
 
   return (
-    <div className="App container mx-auto mt-3 font-thin">
+    <div className="Users container mx-auto mt-3 font-thin">
       <h1 className="text-4xl">
         <SiGoogleclassroom className="inline-block text-red-400 align-top" />{" "}
-        Courses
+        Users
       </h1>
-      <AddCourse
-        onSendCourse={(myCourse) => setCourseList([...courseList, myCourse])}
-        lastId={courseList.reduce(
+      <AddUser
+        onSendUser={(myUser) => setUserList([...userList, myUser])}
+        lastId={userList.reduce(
           (max, item) => (Number(item.id) > max ? Number(item.id) : max),
           0
         )}
       />
-      <SearchCourses
+      <SearchUsers
         onQueryChange={(myQuery) => setQuery(myQuery)}
         query={query}
         orderBy={orderBy}
@@ -53,12 +53,12 @@ function App() {
         onSortByChange={(mySort) => setSortBy(mySort)}
       />
       <ul className="divide-y divide-gray-200">
-        {filterCourses.map((course) => (
-          <CourseInfo key={course.id} course={course} />
+        {filterUsers.map((user) => (
+          <UserInfo key={user.id} user={user} />
         ))}
       </ul>
     </div>
   );
 }
 
-export default App;
+export default Users;
