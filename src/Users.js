@@ -4,17 +4,43 @@ import AddUser from "./Components/AddUser";
 import UserInfo from "./Components/UserInfo";
 import SearchUsers from "./Components/SearchUsers";
 import NavBar from "./NavBar";
+import {
+  getCoursesPassed,
+  getAvgCoursesCompleted,
+  getLastDateCourse,
+  getCountTries,
+} from "./utils.js";
 
-function Users() {
+const Users = ({ courseList }) => {
   const [userList, setUserList] = useState([]);
   const [query, setQuery] = useState("");
-  const [sortBy, setSortBy] = useState("userName");
+  const [sortBy, setSortBy] = useState("ranking");
   const [orderBy, setOrderBy] = useState("asc");
+
+  const updateUsers = (data) => {
+    const users = data.map((user) => {
+      const courses = user.coursesId.map((id) => {
+        const courseFilter = courseList.filter((course) => course.id === id);
+        return courseFilter;
+      });
+      user.courses = [...courses];
+      user.coursesPassed = getCoursesPassed(courses);
+      user.averageCourseCompleted = getAvgCoursesCompleted(courses);
+      user.lastDateCourse = getLastDateCourse(courses);
+      user.countTries = getCountTries(courses);
+      const ldate = new Date(user.lastDateCourse).getTime();
+      user.ranking =
+        (user.coursesPassed * user.averageCourseCompleted * ldate) /
+        user.countTries;
+      return user;
+    });
+    setUserList(users);
+  };
 
   const fetchData = useCallback(() => {
     fetch("./users.json")
       .then((response) => response.json())
-      .then((data) => setUserList(data));
+      .then((data) => updateUsers(data));
   }, []);
 
   useEffect(() => {
@@ -26,10 +52,8 @@ function Users() {
       return item.userName.toLowerCase().includes(query.toLowerCase());
     })
     .sort((a, b) => {
-      const order = orderBy === "asc" ? 1 : -1;
-      return a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
-        ? -1 * order
-        : 1 * order;
+      const order = orderBy === "desc" ? 1 : -1;
+      return a[sortBy] < b[sortBy] ? -1 * order : 1 * order;
     });
 
   return (
@@ -58,6 +82,6 @@ function Users() {
       </ul>
     </div>
   );
-}
+};
 
 export default Users;

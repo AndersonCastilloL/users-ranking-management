@@ -1,20 +1,20 @@
 [
     {
-      "id": "0",
+      "id": 0,
       "userName": "Anderson Castillo",
       "rolName": "UI Designer",
       "userDate": "2018-11-30 15:45",
       "coursesId": [0,1]
     },
     {
-        "id": "1",
+        "id": 1,
         "userName": "Scott Summers",
         "rolName": "Software Developer",
         "userDate": "2018-12-30 18:45",
         "coursesId": [2,3]
     },
     {
-        "id": "2",
+        "id": 2,
         "userName": "Reed Richards",
         "rolName": "Cloud Architect",
         "userDate": "2022-10-20 10:45",
